@@ -1,8 +1,4 @@
 {
-  "id_map": {
-    "DIMENSION": 1,
-    "GUI": 1
-  },
   "mod_elements": [
     {
       "name": "NoobChest",
@@ -10,7 +6,6 @@
       "sortid": 1,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "path": "~/blocks/noob_chest"
     },
     {
@@ -19,9 +14,6 @@
       "sortid": 2,
       "compiles": true,
       "locked_code": false,
-      "ids": {
-        "0": 1
-      },
       "path": "~/blocks/noob_chest"
     },
     {
@@ -30,7 +22,6 @@
       "sortid": 3,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "metadata": {
         "dependencies": [
           {
@@ -62,8 +53,7 @@
       "type": "tab",
       "sortid": 4,
       "compiles": true,
-      "locked_code": false,
-      "ids": {}
+      "locked_code": false
     },
     {
       "name": "NoobBio",
@@ -71,7 +61,6 @@
       "sortid": 5,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "path": "~/dim"
     },
     {
@@ -80,9 +69,6 @@
       "sortid": 6,
       "compiles": true,
       "locked_code": false,
-      "ids": {
-        "1": 1
-      },
       "metadata": {
         "ep": true
       },
@@ -94,7 +80,6 @@
       "sortid": 7,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "path": "~/blocks/noob_chest"
     },
     {
@@ -103,7 +88,6 @@
       "sortid": 8,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "metadata": {
         "dependencies": [
           {
@@ -131,21 +115,11 @@
       "path": "~/food"
     },
     {
-      "name": "NoobFood",
-      "type": "food",
-      "sortid": 8,
-      "compiles": true,
-      "locked_code": false,
-      "ids": {},
-      "path": "~/food"
-    },
-    {
       "name": "MudAxeMobIsHitWithTool",
       "type": "procedure",
       "sortid": 9,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "metadata": {
         "dependencies": [
           {
@@ -166,7 +140,6 @@
       "sortid": 9,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "path": "~/tools/mud"
     },
     {
@@ -175,7 +148,6 @@
       "sortid": 11,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "path": "~/tools/mud"
     },
     {
@@ -184,7 +156,6 @@
       "sortid": 12,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "path": "~/tools/mud"
     },
     {
@@ -193,7 +164,6 @@
       "sortid": 13,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "path": "~/tools/mud"
     },
     {
@@ -202,7 +172,6 @@
       "sortid": 14,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "path": "~/tools/mud"
     },
     {
@@ -211,7 +180,6 @@
       "sortid": 15,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "path": "~/dim"
     },
     {
@@ -220,7 +188,6 @@
       "sortid": 16,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "path": "~/tools/mud"
     },
     {
@@ -229,7 +196,6 @@
       "sortid": 17,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_dust",
       "path": "~/items"
     },
@@ -239,7 +205,6 @@
       "sortid": 18,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_ore",
       "path": "~/blocks/noob_ore"
     },
@@ -249,7 +214,6 @@
       "sortid": 19,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_block",
       "path": "~/blocks/noob_ore"
     },
@@ -259,7 +223,6 @@
       "sortid": 20,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_ore_block_recipe",
       "path": "~/blocks/noob_ore"
     },
@@ -269,7 +232,6 @@
       "sortid": 21,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_block_ore_recipe",
       "path": "~/blocks/noob_ore"
     },
@@ -279,7 +241,6 @@
       "sortid": 22,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_ore_smelting",
       "path": "~/blocks/noob_ore"
     },
@@ -289,7 +250,6 @@
       "sortid": 23,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_pickaxe",
       "path": "~/tools/noob"
     },
@@ -299,7 +259,6 @@
       "sortid": 24,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_axe",
       "path": "~/tools/noob"
     },
@@ -309,7 +268,6 @@
       "sortid": 25,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_sword",
       "path": "~/tools/noob"
     },
@@ -319,7 +277,6 @@
       "sortid": 26,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_shovel",
       "path": "~/tools/noob"
     },
@@ -329,7 +286,6 @@
       "sortid": 27,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_hoe",
       "path": "~/tools/noob"
     },
@@ -339,7 +295,6 @@
       "sortid": 28,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_pickaxe_recipe",
       "path": "~/tools/noob"
     },
@@ -349,7 +304,6 @@
       "sortid": 29,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_axe_recipe",
       "path": "~/tools/noob"
     },
@@ -359,7 +313,6 @@
       "sortid": 30,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_sword_recipe",
       "path": "~/tools/noob"
     },
@@ -369,7 +322,6 @@
       "sortid": 31,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_shovel_recipe",
       "path": "~/tools/noob"
     },
@@ -379,7 +331,6 @@
       "sortid": 32,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_hoe_recipe",
       "path": "~/tools/noob"
     },
@@ -389,7 +340,6 @@
       "sortid": 33,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_armor",
       "metadata": {
         "eh": true,
@@ -405,7 +355,6 @@
       "sortid": 34,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_armor_helmet_recipe",
       "path": "~/armour/noob"
     },
@@ -415,7 +364,6 @@
       "sortid": 35,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_armor_body_recipe",
       "path": "~/armour/noob"
     },
@@ -425,7 +373,6 @@
       "sortid": 36,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_armor_leggings_recipe",
       "path": "~/armour/noob"
     },
@@ -435,7 +382,6 @@
       "sortid": 37,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "noob_armor_boots_recipe",
       "path": "~/armour/noob"
     },
@@ -445,7 +391,6 @@
       "sortid": 38,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "mud_shovel",
       "path": "~/tools/mud"
     },
@@ -455,7 +400,6 @@
       "sortid": 39,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "mud_hoe",
       "path": "~/tools/mud"
     },
@@ -465,7 +409,6 @@
       "sortid": 40,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "mud_shovel_top",
       "path": "~/tools/mud"
     },
@@ -475,7 +418,6 @@
       "sortid": 41,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "mud_shovel_top_recipe",
       "path": "~/tools/mud"
     },
@@ -485,7 +427,6 @@
       "sortid": 42,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "mud_shovel_bottom",
       "path": "~/tools/mud"
     },
@@ -495,7 +436,6 @@
       "sortid": 43,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "mud_shovel_bottom_recipe",
       "path": "~/tools/mud"
     },
@@ -505,7 +445,6 @@
       "sortid": 40,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "mud_shovel_recipe",
       "path": "~/tools/mud"
     },
@@ -515,7 +454,6 @@
       "sortid": 44,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "mud_hoe_recipe",
       "path": "~/tools/mud"
     },
@@ -525,7 +463,6 @@
       "sortid": 45,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "dirt_armour_armor",
       "metadata": {
         "eh": true,
@@ -541,7 +478,6 @@
       "sortid": 46,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "dirt_armour_armor_helmet_recipe",
       "path": "~/armour/dirt"
     },
@@ -551,7 +487,6 @@
       "sortid": 47,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "dirt_armour_armor_body_recipe",
       "path": "~/armour/dirt"
     },
@@ -561,7 +496,6 @@
       "sortid": 48,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "dirt_armour_armor_leggings_recipe",
       "path": "~/armour/dirt"
     },
@@ -571,7 +505,6 @@
       "sortid": 49,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "dirt_armour_armor_boots_recipe",
       "path": "~/armour/dirt"
     },
@@ -581,7 +514,6 @@
       "sortid": 51,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "saliva",
       "path": "~/items"
     },
@@ -591,7 +523,6 @@
       "sortid": 52,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "creative_gauntlet_right_clicked",
       "metadata": {
         "dependencies": [
@@ -613,7 +544,6 @@
       "sortid": 52,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "creative_gauntlet",
       "path": "~/items"
     },
@@ -623,7 +553,6 @@
       "sortid": 54,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "creative_gaunt",
       "path": "~/items"
     },
@@ -633,9 +562,17 @@
       "sortid": 57,
       "compiles": true,
       "locked_code": false,
-      "ids": {},
       "registry_name": "the_noob",
       "path": "~/entities"
+    },
+    {
+      "name": "NoobFood",
+      "type": "item",
+      "sortid": 58,
+      "compiles": true,
+      "locked_code": false,
+      "registry_name": "noob_food",
+      "path": "~/food"
     }
   ],
   "variable_elements": [
@@ -669,12 +606,12 @@
       "tile.noob_ore.name": "Noob Ore",
       "item.noob.noob_pickaxe": "Noob Pickaxe",
       "biome.noob.noob_bio": "Noob Bio",
-      "item.noob.mudaxe": "Mud Axe",
       "item.noob.mud_shovel": "Mud Shovel",
+      "item.noob.mudaxe": "Mud Axe",
       "item.noob.saliva": "Saliva",
-      "item.noob_axe.name": "Noob Axe",
-      "item.noob_hoe.name": "Noob Hoe",
       "item.mud_hoe.name": "Mud Hoe",
+      "item.noob_hoe.name": "Noob Hoe",
+      "item.noob_axe.name": "Noob Axe",
       "item.noob.dirt_armour_armor_chestplate": "DirtArmour Chestplate",
       "item.noob.the_noob_spawn_egg": "The Noob Spawn Egg",
       "item.noob.noob_dust": "Noob",
@@ -792,10 +729,10 @@
     "dependencies": [],
     "dependants": [],
     "mcreatorDependencies": [],
-    "currentGenerator": "forge-1.15.2",
+    "currentGenerator": "forge-1.16.5",
     "credits": "Created using mod maker MCreator - https://mcreator.net/about. Noob skin from https://www.minecraftskins.com/skin/20735075/noob/",
     "modElementsPackage": "io.itch.awesomekalin.noob",
     "lockBaseModFiles": false
   },
-  "mcreatorVersion": 202100236710
+  "mcreatorVersion": 202200234517
 }

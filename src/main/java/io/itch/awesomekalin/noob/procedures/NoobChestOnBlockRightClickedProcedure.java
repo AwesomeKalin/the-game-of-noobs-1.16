@@ -19,19 +19,14 @@ import java.util.Map;
 import io.netty.buffer.Unpooled;
 
 import io.itch.awesomekalin.noob.gui.NoobChestGUIGui;
-import io.itch.awesomekalin.noob.NoobModElements;
 import io.itch.awesomekalin.noob.NoobMod;
 
-@NoobModElements.ModElement.Tag
-public class NoobChestOnBlockRightClickedProcedure extends NoobModElements.ModElement {
-	public NoobChestOnBlockRightClickedProcedure(NoobModElements instance) {
-		super(instance, 3);
-	}
+public class NoobChestOnBlockRightClickedProcedure {
 
 	public static void executeProcedure(Map<String, Object> dependencies) {
-		if (dependencies.get("entity") == null) {
-			if (!dependencies.containsKey("entity"))
-				NoobMod.LOGGER.warn("Failed to load dependency entity for procedure NoobChestOnBlockRightClicked!");
+		if (dependencies.get("world") == null) {
+			if (!dependencies.containsKey("world"))
+				NoobMod.LOGGER.warn("Failed to load dependency world for procedure NoobChestOnBlockRightClicked!");
 			return;
 		}
 		if (dependencies.get("x") == null) {
@@ -49,20 +44,20 @@ public class NoobChestOnBlockRightClickedProcedure extends NoobModElements.ModEl
 				NoobMod.LOGGER.warn("Failed to load dependency z for procedure NoobChestOnBlockRightClicked!");
 			return;
 		}
-		if (dependencies.get("world") == null) {
-			if (!dependencies.containsKey("world"))
-				NoobMod.LOGGER.warn("Failed to load dependency world for procedure NoobChestOnBlockRightClicked!");
+		if (dependencies.get("entity") == null) {
+			if (!dependencies.containsKey("entity"))
+				NoobMod.LOGGER.warn("Failed to load dependency entity for procedure NoobChestOnBlockRightClicked!");
 			return;
 		}
-		Entity entity = (Entity) dependencies.get("entity");
+		IWorld world = (IWorld) dependencies.get("world");
 		double x = dependencies.get("x") instanceof Integer ? (int) dependencies.get("x") : (double) dependencies.get("x");
 		double y = dependencies.get("y") instanceof Integer ? (int) dependencies.get("y") : (double) dependencies.get("y");
 		double z = dependencies.get("z") instanceof Integer ? (int) dependencies.get("z") : (double) dependencies.get("z");
-		IWorld world = (IWorld) dependencies.get("world");
+		Entity entity = (Entity) dependencies.get("entity");
 		{
 			Entity _ent = entity;
 			if (_ent instanceof ServerPlayerEntity) {
-				BlockPos _bpos = new BlockPos((int) x, (int) y, (int) z);
+				BlockPos _bpos = new BlockPos(x, y, z);
 				NetworkHooks.openGui((ServerPlayerEntity) _ent, new INamedContainerProvider() {
 					@Override
 					public ITextComponent getDisplayName() {

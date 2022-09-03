@@ -31,5 +31,6 @@ public class NoobTabItemGroup extends NoobModElements.ModElement {
 			}
 		}.setBackgroundImageName("item_search.png");
 	}
+
 	public static ItemGroup tab;
 }

@@ -15,6 +15,7 @@ import io.itch.awesomekalin.noob.NoobModElements;
 public class MudShovelItem extends NoobModElements.ModElement {
 	@ObjectHolder("noob:mud_shovel")
 	public static final Item block = null;
+
 	public MudShovelItem(NoobModElements instance) {
 		super(instance, 38);
 	}

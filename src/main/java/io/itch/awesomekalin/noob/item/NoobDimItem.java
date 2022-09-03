@@ -17,6 +17,7 @@ import io.itch.awesomekalin.noob.itemgroup.NoobTabItemGroup;
 public class NoobDimItem extends Item {
 	@ObjectHolder("noob:noob_dim")
 	public static final Item block = null;
+
 	public NoobDimItem() {
 		super(new Item.Properties().group(NoobTabItemGroup.tab).maxDamage(64));
 	}

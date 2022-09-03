@@ -16,6 +16,7 @@ import io.itch.awesomekalin.noob.NoobModElements;
 public class NoobHoeItem extends NoobModElements.ModElement {
 	@ObjectHolder("noob:noob_hoe")
 	public static final Item block = null;
+
 	public NoobHoeItem(NoobModElements instance) {
 		super(instance, 27);
 	}
@@ -46,7 +47,7 @@ public class NoobHoeItem extends NoobModElements.ModElement {
 			public Ingredient getRepairMaterial() {
 				return Ingredient.fromStacks(new ItemStack(NoobDustItem.block));
 			}
-		}, -3f, new Item.Properties().group(NoobTabItemGroup.tab)) {
+		}, 0, -3f, new Item.Properties().group(NoobTabItemGroup.tab)) {
 		}.setRegistryName("noob_hoe"));
 	}
 }

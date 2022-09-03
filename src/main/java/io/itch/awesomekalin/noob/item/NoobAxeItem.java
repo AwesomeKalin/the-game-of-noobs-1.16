@@ -16,6 +16,7 @@ import io.itch.awesomekalin.noob.NoobModElements;
 public class NoobAxeItem extends NoobModElements.ModElement {
 	@ObjectHolder("noob:noob_axe")
 	public static final Item block = null;
+
 	public NoobAxeItem(NoobModElements instance) {
 		super(instance, 24);
 	}

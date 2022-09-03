@@ -16,6 +16,7 @@ import io.itch.awesomekalin.noob.NoobModElements;
 public class NoobSwordItem extends NoobModElements.ModElement {
 	@ObjectHolder("noob:noob_sword")
 	public static final Item block = null;
+
 	public NoobSwordItem(NoobModElements instance) {
 		super(instance, 25);
 	}

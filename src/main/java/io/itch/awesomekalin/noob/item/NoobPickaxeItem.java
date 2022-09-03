@@ -16,6 +16,7 @@ import io.itch.awesomekalin.noob.NoobModElements;
 public class NoobPickaxeItem extends NoobModElements.ModElement {
 	@ObjectHolder("noob:noob_pickaxe")
 	public static final Item block = null;
+
 	public NoobPickaxeItem(NoobModElements instance) {
 		super(instance, 23);
 	}

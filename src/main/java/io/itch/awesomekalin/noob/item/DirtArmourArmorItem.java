@@ -29,6 +29,7 @@ public class DirtArmourArmorItem extends NoobModElements.ModElement {
 	public static final Item legs = null;
 	@ObjectHolder("noob:dirt_armour_armor_boots")
 	public static final Item boots = null;
+
 	public DirtArmourArmorItem(NoobModElements instance) {
 		super(instance, 45);
 	}
@@ -36,32 +37,44 @@ public class DirtArmourArmorItem extends NoobModElements.ModElement {
 	@Override
 	public void initElements() {
 		IArmorMaterial armormaterial = new IArmorMaterial() {
+			@Override
 			public int getDurability(EquipmentSlotType slot) {
 				return new int[]{13, 15, 16, 11}[slot.getIndex()] * 2;
 			}
 
+			@Override
 			public int getDamageReductionAmount(EquipmentSlotType slot) {
 				return new int[]{0, 1, 1, 0}[slot.getIndex()];
 			}
 
+			@Override
 			public int getEnchantability() {
 				return 1;
 			}
 
+			@Override
 			public net.minecraft.util.SoundEvent getSoundEvent() {
 				return (net.minecraft.util.SoundEvent) ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(""));
 			}
 
+			@Override
 			public Ingredient getRepairMaterial() {
 				return Ingredient.fromStacks(new ItemStack(Blocks.DIRT));
 			}
 
 			@OnlyIn(Dist.CLIENT)
+			@Override
 			public String getName() {
 				return "dirt_armour_armor";
 			}
 
+			@Override
 			public float getToughness() {
+				return 0f;
+			}
+
+			@Override
+			public float getKnockbackResistance() {
 				return 0f;
 			}
 		};
@@ -90,4 +103,5 @@ public class DirtArmourArmorItem extends NoobModElements.ModElement {
 			}
 		}.setRegistryName("dirt_armour_armor_boots"));
 	}
+
 }

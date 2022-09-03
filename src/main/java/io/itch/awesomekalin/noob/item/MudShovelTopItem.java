@@ -3,6 +3,7 @@ package io.itch.awesomekalin.noob.item;
 
 import net.minecraftforge.registries.ObjectHolder;
 
+import net.minecraft.item.UseAction;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item;
@@ -15,6 +16,7 @@ import io.itch.awesomekalin.noob.NoobModElements;
 public class MudShovelTopItem extends NoobModElements.ModElement {
 	@ObjectHolder("noob:mud_shovel_top")
 	public static final Item block = null;
+
 	public MudShovelTopItem(NoobModElements instance) {
 		super(instance, 40);
 	}
@@ -23,6 +25,7 @@ public class MudShovelTopItem extends NoobModElements.ModElement {
 	public void initElements() {
 		elements.items.add(() -> new ItemCustom());
 	}
+
 	public static class ItemCustom extends Item {
 		public ItemCustom() {
 			super(new Item.Properties().group(NoobTabItemGroup.tab).maxStackSize(1).rarity(Rarity.COMMON));
@@ -30,12 +33,12 @@ public class MudShovelTopItem extends NoobModElements.ModElement {
 		}
 
 		@Override
-		public int getItemEnchantability() {
-			return 0;
+		public UseAction getUseAction(ItemStack itemstack) {
+			return UseAction.EAT;
 		}
 
 		@Override
-		public int getUseDuration(ItemStack itemstack) {
+		public int getItemEnchantability() {
 			return 0;
 		}
 

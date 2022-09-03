@@ -11,8 +11,10 @@ import net.minecraft.item.IItemTier;
 import net.minecraft.item.AxeItem;
 import net.minecraft.entity.LivingEntity;
 
+import java.util.stream.Stream;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.AbstractMap;
 
 import io.itch.awesomekalin.noob.procedures.MudAxeMobIsHitWithToolProcedure;
 import io.itch.awesomekalin.noob.itemgroup.NoobTabItemGroup;
@@ -22,6 +24,7 @@ import io.itch.awesomekalin.noob.NoobModElements;
 public class MudAxeItem extends NoobModElements.ModElement {
 	@ObjectHolder("noob:mud_axe")
 	public static final Item block = null;
+
 	public MudAxeItem(NoobModElements instance) {
 		super(instance, 9);
 	}
@@ -60,12 +63,10 @@ public class MudAxeItem extends NoobModElements.ModElement {
 				double y = entity.getPosY();
 				double z = entity.getPosZ();
 				World world = entity.world;
-				{
-					Map<String, Object> $_dependencies = new HashMap<>();
-					$_dependencies.put("entity", entity);
-					$_dependencies.put("itemstack", itemstack);
-					MudAxeMobIsHitWithToolProcedure.executeProcedure($_dependencies);
-				}
+
+				MudAxeMobIsHitWithToolProcedure.executeProcedure(
+						Stream.of(new AbstractMap.SimpleEntry<>("entity", entity), new AbstractMap.SimpleEntry<>("itemstack", itemstack))
+								.collect(HashMap::new, (_m, _e) -> _m.put(_e.getKey(), _e.getValue()), Map::putAll));
 				return retval;
 			}
 		}.setRegistryName("mud_axe"));

@@ -6,14 +6,9 @@ import net.minecraft.entity.Entity;
 
 import java.util.Map;
 
-import io.itch.awesomekalin.noob.NoobModElements;
 import io.itch.awesomekalin.noob.NoobMod;
 
-@NoobModElements.ModElement.Tag
-public class MudAxeMobIsHitWithToolProcedure extends NoobModElements.ModElement {
-	public MudAxeMobIsHitWithToolProcedure(NoobModElements instance) {
-		super(instance, 9);
-	}
+public class MudAxeMobIsHitWithToolProcedure {
 
 	public static void executeProcedure(Map<String, Object> dependencies) {
 		if (dependencies.get("entity") == null) {
@@ -29,7 +24,7 @@ public class MudAxeMobIsHitWithToolProcedure extends NoobModElements.ModElement 
 		Entity entity = (Entity) dependencies.get("entity");
 		ItemStack itemstack = (ItemStack) dependencies.get("itemstack");
 		entity.setCustomName(new StringTextComponent("Noobed"));
-		((itemstack)).setDisplayName(new StringTextComponent("HOW DARE YOU!"));
+		(itemstack).setDisplayName(new StringTextComponent("HOW DARE YOU!"));
 		{
 			Entity _ent = entity;
 			if (!_ent.world.isRemote && _ent.world.getServer() != null) {

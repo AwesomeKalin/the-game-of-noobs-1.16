@@ -15,9 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
 
 import net.minecraft.world.World;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.item.ItemStack;
@@ -28,9 +26,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.Minecraft;
 
 import java.util.function.Supplier;
 import java.util.Map;
@@ -39,12 +35,11 @@ import java.util.HashMap;
 import io.itch.awesomekalin.noob.NoobModElements;
 import io.itch.awesomekalin.noob.NoobMod;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-
 @NoobModElements.ModElement.Tag
 public class NoobChestGUIGui extends NoobModElements.ModElement {
 	public static HashMap guistate = new HashMap();
 	private static ContainerType<GuiContainerMod> containerType = null;
+
 	public NoobChestGUIGui(NoobModElements instance) {
 		super(instance, 2);
 		elements.addNetworkMessage(ButtonPressedMessage.class, ButtonPressedMessage::buffer, ButtonPressedMessage::new,
@@ -52,18 +47,21 @@ public class NoobChestGUIGui extends NoobModElements.ModElement {
 		elements.addNetworkMessage(GUISlotChangedMessage.class, GUISlotChangedMessage::buffer, GUISlotChangedMessage::new,
 				GUISlotChangedMessage::handler);
 		containerType = new ContainerType<>(new GuiContainerModFactory());
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
+		FMLJavaModLoadingContext.get().getModEventBus().register(new ContainerRegisterHandler());
+	}
+
+	private static class ContainerRegisterHandler {
+		@SubscribeEvent
+		public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
+			event.getRegistry().register(containerType.setRegistryName("noob_chest_gui"));
+		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public void initElements() {
-		DeferredWorkQueue.runLater(() -> ScreenManager.registerFactory(containerType, GuiWindow::new));
+		DeferredWorkQueue.runLater(() -> ScreenManager.registerFactory(containerType, NoobChestGUIGuiWindow::new));
 	}
 
-	@SubscribeEvent
-	public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
-		event.getRegistry().register(containerType.setRegistryName("noob_chest_gui"));
-	}
 	public static class GuiContainerModFactory implements IContainerFactory {
 		public GuiContainerMod create(int id, PlayerInventory inv, PacketBuffer extraData) {
 			return new GuiContainerMod(id, inv, extraData);
@@ -71,12 +69,13 @@ public class NoobChestGUIGui extends NoobModElements.ModElement {
 	}
 
 	public static class GuiContainerMod extends Container implements Supplier<Map<Integer, Slot>> {
-		private World world;
-		private PlayerEntity entity;
-		private int x, y, z;
+		World world;
+		PlayerEntity entity;
+		int x, y, z;
 		private IItemHandler internal;
 		private Map<Integer, Slot> customSlots = new HashMap<>();
 		private boolean bound = false;
+
 		public GuiContainerMod(int id, PlayerInventory inv, PacketBuffer extraData) {
 			super(containerType, id);
 			this.entity = inv.player;
@@ -178,12 +177,9 @@ public class NoobChestGUIGui extends NoobModElements.ModElement {
 			return itemstack;
 		}
 
-		@Override /**
-					 * Merges provided ItemStack with the first avaliable one in the
-					 * container/player inventor between minIndex (included) and maxIndex
-					 * (excluded). Args : stack, minIndex, maxIndex, negativDirection. /!\ the
-					 * Container implementation do not check if the item is valid for the slot
-					 */
+		@Override /** 
+					* Merges provided ItemStack with the first avaliable one in the container/player inventor between minIndex (included) and maxIndex (excluded). Args : stack, minIndex, maxIndex, negativDirection. /!\ the Container implementation do not check if the item is valid for the slot
+					*/
 		protected boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
 			boolean flag = false;
 			int i = startIndex;
@@ -277,82 +273,16 @@ public class NoobChestGUIGui extends NoobModElements.ModElement {
 		}
 
 		private void slotChanged(int slotid, int ctype, int meta) {
-			if (this.world != null && this.world.isRemote) {
+			if (this.world != null && this.world.isRemote()) {
 				NoobMod.PACKET_HANDLER.sendToServer(new GUISlotChangedMessage(slotid, x, y, z, ctype, meta));
 				handleSlotAction(entity, slotid, ctype, meta, x, y, z);
 			}
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public static class GuiWindow extends ContainerScreen<GuiContainerMod> {
-		private World world;
-		private int x, y, z;
-		private PlayerEntity entity;
-		public GuiWindow(GuiContainerMod container, PlayerInventory inventory, ITextComponent text) {
-			super(container, inventory, text);
-			this.world = container.world;
-			this.x = container.x;
-			this.y = container.y;
-			this.z = container.z;
-			this.entity = container.entity;
-			this.xSize = 176;
-			this.ySize = 166;
-		}
-		private static final ResourceLocation texture = new ResourceLocation("noob:textures/noob_chest_gui.png");
-		@Override
-		public void render(int mouseX, int mouseY, float partialTicks) {
-			this.renderBackground();
-			super.render(mouseX, mouseY, partialTicks);
-			this.renderHoveredToolTip(mouseX, mouseY);
-		}
-
-		@Override
-		protected void drawGuiContainerBackgroundLayer(float partialTicks, int gx, int gy) {
-			RenderSystem.color4f(1, 1, 1, 1);
-			RenderSystem.enableBlend();
-			RenderSystem.defaultBlendFunc();
-			Minecraft.getInstance().getTextureManager().bindTexture(texture);
-			int k = (this.width - this.xSize) / 2;
-			int l = (this.height - this.ySize) / 2;
-			this.blit(k, l, 0, 0, this.xSize, this.ySize, this.xSize, this.ySize);
-			RenderSystem.disableBlend();
-		}
-
-		@Override
-		public boolean keyPressed(int key, int b, int c) {
-			if (key == 256) {
-				this.minecraft.player.closeScreen();
-				return true;
-			}
-			return super.keyPressed(key, b, c);
-		}
-
-		@Override
-		public void tick() {
-			super.tick();
-		}
-
-		@Override
-		protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-			this.font.drawString("Noob Chest", 60, 2, -1);
-		}
-
-		@Override
-		public void removed() {
-			super.removed();
-			Minecraft.getInstance().keyboardListener.enableRepeatEvents(false);
-		}
-
-		@Override
-		public void init(Minecraft minecraft, int width, int height) {
-			super.init(minecraft, width, height);
-			minecraft.keyboardListener.enableRepeatEvents(true);
-		}
-	}
-
 	public static class ButtonPressedMessage {
 		int buttonID, x, y, z;
+
 		public ButtonPressedMessage(PacketBuffer buffer) {
 			this.buttonID = buffer.readInt();
 			this.x = buffer.readInt();
@@ -390,6 +320,7 @@ public class NoobChestGUIGui extends NoobModElements.ModElement {
 
 	public static class GUISlotChangedMessage {
 		int slotID, x, y, z, changeType, meta;
+
 		public GUISlotChangedMessage(int slotID, int x, int y, int z, int changeType, int meta) {
 			this.slotID = slotID;
 			this.x = x;
@@ -432,7 +363,8 @@ public class NoobChestGUIGui extends NoobModElements.ModElement {
 			context.setPacketHandled(true);
 		}
 	}
-	private static void handleButtonAction(PlayerEntity entity, int buttonID, int x, int y, int z) {
+
+	static void handleButtonAction(PlayerEntity entity, int buttonID, int x, int y, int z) {
 		World world = entity.world;
 		// security measure to prevent arbitrary chunk generation
 		if (!world.isBlockLoaded(new BlockPos(x, y, z)))

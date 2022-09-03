@@ -2,35 +2,38 @@
 package io.itch.awesomekalin.noob.block;
 
 import net.minecraftforge.registries.ObjectHolder;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
 
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.gen.placement.Placement;
-import net.minecraft.world.gen.placement.CountRangeConfig;
+import net.minecraft.world.gen.feature.template.RuleTest;
+import net.minecraft.world.gen.feature.template.IRuleTestType;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.OreFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.World;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Direction;
@@ -43,6 +46,7 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.loot.LootContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.BlockItem;
@@ -62,12 +66,14 @@ import net.minecraft.block.Block;
 
 import javax.annotation.Nullable;
 
+import java.util.stream.Stream;
 import java.util.stream.IntStream;
 import java.util.Random;
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Collections;
+import java.util.AbstractMap;
 
 import io.netty.buffer.Unpooled;
 
@@ -82,9 +88,12 @@ public class NoobChestBlock extends NoobModElements.ModElement {
 	public static final Block block = null;
 	@ObjectHolder("noob:noob_chest")
 	public static final TileEntityType<CustomTileEntity> tileEntityType = null;
+
 	public NoobChestBlock(NoobModElements instance) {
 		super(instance, 1);
-		FMLJavaModLoadingContext.get().getModEventBus().register(this);
+		MinecraftForge.EVENT_BUS.register(this);
+		FMLJavaModLoadingContext.get().getModEventBus().register(new FeatureRegisterHandler());
+		FMLJavaModLoadingContext.get().getModEventBus().register(new TileEntityRegisterHandler());
 	}
 
 	@Override
@@ -93,13 +102,17 @@ public class NoobChestBlock extends NoobModElements.ModElement {
 		elements.items.add(() -> new BlockItem(block, new Item.Properties().group(NoobTabItemGroup.tab)).setRegistryName(block.getRegistryName()));
 	}
 
-	@SubscribeEvent
-	public void registerTileEntity(RegistryEvent.Register<TileEntityType<?>> event) {
-		event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("noob_chest"));
+	private static class TileEntityRegisterHandler {
+		@SubscribeEvent
+		public void registerTileEntity(RegistryEvent.Register<TileEntityType<?>> event) {
+			event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("noob_chest"));
+		}
 	}
+
 	public static class CustomBlock extends Block {
 		public CustomBlock() {
-			super(Block.Properties.create(Material.SPONGE).sound(SoundType.SLIME).hardnessAndResistance(1f, 10f).lightValue(0));
+			super(Block.Properties.create(Material.SPONGE, MaterialColor.ORANGE_TERRACOTTA).sound(SoundType.SLIME).hardnessAndResistance(1f, 10f)
+					.setLightLevel(s -> 0));
 			setRegistryName("noob_chest");
 		}
 
@@ -109,7 +122,7 @@ public class NoobChestBlock extends NoobModElements.ModElement {
 		}
 
 		@Override
-		public MaterialColor getMaterialColor(BlockState state, IBlockReader blockAccess, BlockPos pos) {
+		public MaterialColor getMaterialColor() {
 			return MaterialColor.ORANGE_TERRACOTTA;
 		}
 
@@ -149,15 +162,11 @@ public class NoobChestBlock extends NoobModElements.ModElement {
 			double hitY = hit.getHitVec().y;
 			double hitZ = hit.getHitVec().z;
 			Direction direction = hit.getFace();
-			{
-				Map<String, Object> $_dependencies = new HashMap<>();
-				$_dependencies.put("entity", entity);
-				$_dependencies.put("x", x);
-				$_dependencies.put("y", y);
-				$_dependencies.put("z", z);
-				$_dependencies.put("world", world);
-				NoobChestOnBlockRightClickedProcedure.executeProcedure($_dependencies);
-			}
+
+			NoobChestOnBlockRightClickedProcedure.executeProcedure(Stream
+					.of(new AbstractMap.SimpleEntry<>("world", world), new AbstractMap.SimpleEntry<>("x", x), new AbstractMap.SimpleEntry<>("y", y),
+							new AbstractMap.SimpleEntry<>("z", z), new AbstractMap.SimpleEntry<>("entity", entity))
+					.collect(HashMap::new, (_m, _e) -> _m.put(_e.getKey(), _e.getValue()), Map::putAll));
 			return ActionResultType.SUCCESS;
 		}
 
@@ -201,13 +210,14 @@ public class NoobChestBlock extends NoobModElements.ModElement {
 
 	public static class CustomTileEntity extends LockableLootTileEntity implements ISidedInventory {
 		private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(2, ItemStack.EMPTY);
+
 		protected CustomTileEntity() {
 			super(tileEntityType);
 		}
 
 		@Override
-		public void read(CompoundNBT compound) {
-			super.read(compound);
+		public void read(BlockState blockState, CompoundNBT compound) {
+			super.read(blockState, compound);
 			if (!this.checkLootAndRead(compound)) {
 				this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 			}
@@ -235,7 +245,7 @@ public class NoobChestBlock extends NoobModElements.ModElement {
 
 		@Override
 		public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-			this.read(pkt.getNbtCompound());
+			this.read(this.getBlockState(), pkt.getNbtCompound());
 		}
 
 		@Override
@@ -300,7 +310,9 @@ public class NoobChestBlock extends NoobModElements.ModElement {
 		public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
 			return true;
 		}
+
 		private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
+
 		@Override
 		public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
 			if (!this.removed && facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
@@ -315,30 +327,56 @@ public class NoobChestBlock extends NoobModElements.ModElement {
 				handler.invalidate();
 		}
 	}
-	@Override
-	public void init(FMLCommonSetupEvent event) {
-		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
-			biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, new OreFeature(OreFeatureConfig::deserialize) {
+
+	private static Feature<OreFeatureConfig> feature = null;
+	private static ConfiguredFeature<?, ?> configuredFeature = null;
+	private static IRuleTestType<CustomRuleTest> CUSTOM_MATCH = null;
+
+	private static class CustomRuleTest extends RuleTest {
+		static final CustomRuleTest INSTANCE = new CustomRuleTest();
+		static final com.mojang.serialization.Codec<CustomRuleTest> codec = com.mojang.serialization.Codec.unit(() -> INSTANCE);
+
+		public boolean test(BlockState blockAt, Random random) {
+			boolean blockCriteria = false;
+			if (blockAt.getBlock() == Blocks.STONE)
+				blockCriteria = true;
+			if (blockAt.getBlock() == Blocks.DIRT)
+				blockCriteria = true;
+			if (blockAt.getBlock() == Blocks.GRASS_BLOCK)
+				blockCriteria = true;
+			return blockCriteria;
+		}
+
+		protected IRuleTestType<?> getType() {
+			return CUSTOM_MATCH;
+		}
+	}
+
+	private static class FeatureRegisterHandler {
+		@SubscribeEvent
+		public void registerFeature(RegistryEvent.Register<Feature<?>> event) {
+			CUSTOM_MATCH = Registry.register(Registry.RULE_TEST, new ResourceLocation("noob:noob_chest_match"), () -> CustomRuleTest.codec);
+			feature = new OreFeature(OreFeatureConfig.CODEC) {
 				@Override
-				public boolean place(IWorld world, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
-					DimensionType dimensionType = world.getDimension().getType();
+				public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, OreFeatureConfig config) {
+					RegistryKey<World> dimensionType = world.getWorld().getDimensionKey();
 					boolean dimensionCriteria = false;
-					if (dimensionType == DimensionType.OVERWORLD)
+					if (dimensionType == World.OVERWORLD)
 						dimensionCriteria = true;
 					if (!dimensionCriteria)
 						return false;
-					return super.place(world, generator, rand, pos, config);
+					return super.generate(world, generator, rand, pos, config);
 				}
-			}.withConfiguration(new OreFeatureConfig(OreFeatureConfig.FillerBlockType.create("noob_chest", "noob_chest", blockAt -> {
-				boolean blockCriteria = false;
-				if (blockAt.getBlock() == Blocks.STONE)
-					blockCriteria = true;
-				if (blockAt.getBlock() == Blocks.DIRT)
-					blockCriteria = true;
-				if (blockAt.getBlock() == Blocks.GRASS_BLOCK)
-					blockCriteria = true;
-				return blockCriteria;
-			}), block.getDefaultState(), 16)).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 256))));
+			};
+			configuredFeature = feature.withConfiguration(new OreFeatureConfig(CustomRuleTest.INSTANCE, block.getDefaultState(), 16)).range(256)
+					.square().func_242731_b(20);
+			event.getRegistry().register(feature.setRegistryName("noob_chest"));
+			Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation("noob:noob_chest"), configuredFeature);
 		}
+	}
+
+	@SubscribeEvent
+	public void addFeatureToBiomes(BiomeLoadingEvent event) {
+		event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> configuredFeature);
 	}
 }
